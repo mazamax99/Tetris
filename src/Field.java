@@ -109,6 +109,7 @@ public class Field
 
         System.out.println();
         System.out.println();
+        System.out.println();
     }
 
     /**
