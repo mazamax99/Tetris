@@ -1,3 +1,4 @@
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 public class Tetris
@@ -26,13 +27,35 @@ public class Tetris
 
     public void run() throws Exception
     {
+        //Создаем объект "наблюдатель за клавиатурой" и стартуем его.
+        KeyboardObserver keyboardObserver = new KeyboardObserver();
+        keyboardObserver.start();
 
-        //начальное значение для окончания игры
+        //выставляем начальное значение переменной "игра окончена" в ЛОЖЬ
         isGameOver = false;
-        //первая фигура по середине первой строки
+        //создаем первую фигурку посередине сверху: x - половина ширины, y - 0.
         figure = Figures.createRandomFigure(field.getWidth() / 2, 0);
-        while (!isGameOver)
-        {
+        //пока игра не окончена
+        while (!isGameOver) {
+            //"наблюдатель" содержит события о нажатии клавиш?
+            if (keyboardObserver.hasKeyEvents()) {
+                //получить самое первое событие из очереди
+                KeyEvent event = keyboardObserver.getEventFromTop();
+                //Если равно символу 'q' - выйти из игры.
+                if (event.getKeyChar() == 'q') return;
+                //Если "стрелка влево" - сдвинуть фигурку влево
+                if (event.getKeyCode() == KeyEvent.VK_LEFT)
+                    figure.left();
+                    //Если "стрелка вправо" - сдвинуть фигурку вправо
+                else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
+                    figure.right();
+                    //Если  код клавиши равен 12 ("Клавиша E англ.") - повернуть фигурку
+                else if (event.getKeyCode() == 69)
+                    figure.rotate();
+                    //Если "пробел" - фигурка падает вниз на максимум
+                else if (event.getKeyCode() == KeyEvent.VK_SPACE)
+                    figure.downMaximum();
+            }
             step();
             field.print();      //вывод текущего состояния поля
             Thread.sleep(500);
@@ -43,7 +66,7 @@ public class Tetris
     public void step() throws IOException, InterruptedException {
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         figure.down();
-        figure.rotate();
+
         //если разместить фигурку на текущем месте невозможно
         if (!figure.isCurrentPositionAvailable())
         {

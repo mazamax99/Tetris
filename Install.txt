@@ -1,4 +1,0 @@
-Для работы сие проги нужна Java Runtime Environment версии 8 и выше, которую можно скачать по ссылке: https://www.oracle.com/technetwork/java/javase/downloads/2133155 
-а также Java Development Kit и выше которую можно скачать по ссылке:: https://www.oracle.com/technetwork/java/javase/downloads/2133151
-
-После установки данных утилит следует запустить скрипт сборки build.bat, перейти в папку out/bin и запустить игру при помощи Tetris.bat
